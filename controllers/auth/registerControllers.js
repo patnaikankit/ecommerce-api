@@ -2,6 +2,8 @@
 
 import CustomErrorHandler from "../../services/CustomErrorHandler";
 import { User } from "../../models/index.js"
+import bcrypt from "bcrypt";
+import JwtService from "../../services/Jwtservice";
 
 // using joi library for all the validating data provided by the user
 const joi = require("joi");
@@ -38,7 +40,28 @@ const registerController = {
             return next(err);
         }
 
-        res.json({msg: "Hello"})
+        // Securing the password with brypt
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+        const user = new User({
+            name,
+            email,
+            password: hashedPassword
+        });
+
+        let access_token;
+        // saving data of new users in the database 
+        try{
+            const result = await User.save();
+
+            // Token geneartion
+            access_token = JwtService.sign({_id: result._id, role: result.role});
+        }
+        catch(err){
+            return next(err);
+        }
+
+        res.json({access_token: access_token})
     }
 }
 
