@@ -15,6 +15,7 @@ const registerController = {
 
         // Validation
         // user credentials will be checked
+        // creating a register schema
         const registrationSchema = joi.object({
             name: joi.string().min(5).max(30).required(),
             email: joi.string().email().required(),
@@ -33,7 +34,7 @@ const registerController = {
         try{
             const exist = await User.exist({email: req.body.email});
             if(exist){
-                return next(CustomErrorHandler.alreadyExist("This email is laready taken!"));
+                return next(CustomErrorHandler.alreadyExist("This email is already taken!"));
             }
         }
         catch(err){
