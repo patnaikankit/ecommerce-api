@@ -2,7 +2,8 @@
 import express from 'express';
 const router = express.Router();
 // importing the logic from the desired route
-import { registerController, loginController } from '../controllers/index.js';
+import { registerController, loginController, userController } from '../controllers/index.js';
+import auth from "../middleware/auth.js"
 
 
 
@@ -11,5 +12,8 @@ router.post("/register", registerController.register);
 
 // user trying to login
 router.post("/login", loginController.login);
+
+// to fetch user data
+router.get("/me", auth, userController.me);
 
 export default router;
