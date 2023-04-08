@@ -19,4 +19,7 @@ router.get("/me", auth, userController.me);
 // token generation
 router.post("/refresh", refreshController.refresh);
 
+// Logging out
+router.post("/logout", auth, loginController.logout);
+
 export default router;

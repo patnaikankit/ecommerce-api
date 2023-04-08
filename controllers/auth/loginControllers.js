@@ -47,6 +47,31 @@ const loginController = {
         catch(err){
             return next(err);
         }
+    },
+
+    // the logic to logout a user
+    async logout(req, res, next){
+        // validating the token enetered by the user!
+        const refreshSchema = Joi.object({
+            email: Joi.string().email().required(),
+            password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{5,30}$')).required(),
+        });
+
+        const { error } = refreshSchema.validate(req.body);
+
+        // in case any error arises
+        if(error){
+            return next(err);
+        }
+
+        // if the entered token is geniune the proceed to delete it
+        try{
+            await RefreshToken.deleteOne({token: req.body.refresh_token});
+        }
+        catch(err){
+            return next(new Error("Something went wrong!"))
+        }
+        res.json({status: 200})
     }
 }
 
