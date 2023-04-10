@@ -22,4 +22,8 @@ router.post("/refresh", refreshController.refresh);
 // Logging out
 router.post("/logout", auth, loginController.logout);
 
+// Adding a new product
+router.post("/products", auth, productController.store);
+
+
 export default router;

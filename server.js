@@ -4,6 +4,7 @@ import routes from './routes/index.js';
 import { APP_PORT, DB_URL } from "./config/index.js";
 import errorHandler from "./middleware/errorHandler.js";
 import mongoose from 'mongoose';
+import path from "path";
 
 // Database connection
 mongoose.connect(DB_URL, {
@@ -21,9 +22,12 @@ db.once('open', () => {
 // to register all the routes 
 app.use("/api", routes);
 
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.use(errorHandler);
+
+global.appRoot = path.resolve(__dirname);
 
 app.listen(process.env.APP_PORT, (req,res) => {
     console.log("Server is listening on port 3000!");
