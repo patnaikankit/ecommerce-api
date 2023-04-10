@@ -9,6 +9,8 @@ import CustomErrorHandler from "../services/CustomErrorHandler.js";
 import Joi from "joi";
 import fs from "fs";
 import { Product } from "../models/index.js";
+import productSchema from "../validators/productValidators.js"
+
 
 // Specifying the image characteristics
 const storage = multer.diskStorage({
@@ -65,6 +67,54 @@ const productController = {
                     size,
                     path: filePath
                 });
+
+            }
+            catch(err){
+                return next(err);
+            }
+            res.status(201).json(document);
+        });
+    },
+
+    // updating the changes made in the order made by the admin 
+    update(req, res, next){
+        handleMultipartData(req, res, async (err) => {
+            if(err){
+                return next(CustomErrorHandler.serverError(err.message));
+            }
+
+            let filePath;
+            if(req.file){
+                filePath = req.file.path;
+            }
+
+            // validating the request
+    
+            const { error } = productSchema.validate(req.body);
+
+            if(error){
+                // if the validation fails then we have to delete the uploaded file 
+                if(req.file){
+                    fs.unlink(`${appRoot}/${filePath}`, (err) => {
+                        if(err){
+                            return next(CustomErrorHandler.serverError(err.message));
+                        }
+                    });
+                }
+                    return next(error);
+                    // rootfolder -> uploads -> filename
+            }
+
+            // if validation is successful
+            const {name, price, size} = req.body;
+            let document;
+            try{
+                document = await Product.findOneAndUpdate({_id: req.params.id}, {
+                    name, 
+                    price,
+                    size,
+                    ...(req.file && {image: filePath})
+                }, {new: true});
 
             }
             catch(err){
