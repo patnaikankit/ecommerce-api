@@ -1,4 +1,4 @@
-// the logic to add a product to your cart
+// the logic to add, update and delete a product to from cart
 import { product } from "../models/product.js";
 
 // to add an image of the product to the database
@@ -29,6 +29,7 @@ const handleMultipartData = multer({storage, limits: {fileSize: 1000000*5}}).sin
 
 
 const productController = {
+    // adding a product 
     async store(req, res, next){
         // Multipart form data
         handleMultipartData(req, res, async (err) => {
@@ -121,6 +122,22 @@ const productController = {
                 return next(err);
             }
             res.status(201).json(document);
+        });
+    },
+
+    // Deleting a product
+    async destroy(req, res, next){
+        const document = await Product.findOneAndRemove({_id: req.params.id});
+        if(!document){
+            return next(new Error("Nothing to delete!"));
+        }
+        // deleting the image from the database
+        const imagePath = document._doc.path;
+        fs.unlink(`${appRoot}/${imagePath}`, (err) => {
+            if(err){
+                return next(CustomErrorHandler.serverError());
+            }
+            res.json(document);
         });
     }
 }

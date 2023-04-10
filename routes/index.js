@@ -1,6 +1,7 @@
 // all the routes will be created in this page
 import express from 'express';
 const router = express.Router();
+
 // importing the logic from the desired route
 import { registerController, loginController, userController, refreshController } from '../controllers/index.js';
 import auth from "../middleware/auth.js"
@@ -28,6 +29,9 @@ router.post("/products", auth, productController.store);
 
 // Updating a product
 router.put("/products/:id", [auth, admin], productController.update);
+
+// Deleting a product
+router.delete("/products/:id", [auth, admin], productController.destroy);
 
 
 export default router;
