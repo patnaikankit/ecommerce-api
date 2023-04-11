@@ -139,6 +139,18 @@ const productController = {
             }
             res.json(document);
         });
+    },
+
+    // to get all the products
+    async index(req, res, next){
+        let documents;
+        try{
+            documents = await Product.find().select('-updatedAt', '-__v');
+        }
+        catch(err){
+            return next(CustomErrorHandler.serverError());
+        }
+        return res.json(documents);
     }
 }
 

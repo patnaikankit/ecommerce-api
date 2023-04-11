@@ -29,6 +29,9 @@ app.use(errorHandler);
 
 global.appRoot = path.resolve(__dirname);
 
+// to let the browser to know it has to serve the images from uploads folder
+app.use('/uploads', express.static('uploads'));
+
 app.listen(process.env.APP_PORT, (req,res) => {
     console.log("Server is listening on port 3000!");
 });

@@ -33,5 +33,8 @@ router.put("/products/:id", [auth, admin], productController.update);
 // Deleting a product
 router.delete("/products/:id", [auth, admin], productController.destroy);
 
+// to get all the products
+router.get("/products/:id", productController.index);
+
 
 export default router;
