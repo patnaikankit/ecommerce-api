@@ -10,6 +10,7 @@ import Joi from "joi";
 import fs from "fs";
 import { Product } from "../models/index.js";
 import productSchema from "../validators/productValidators.js"
+import { json } from "express";
 
 
 // Specifying the image characteristics
@@ -151,6 +152,18 @@ const productController = {
             return next(CustomErrorHandler.serverError());
         }
         return res.json(documents);
+    },
+
+    // to get a single product
+    async show(req, res, next){
+        let document;
+        try{
+            document = await Product.findOne({_id: req.params.id}).select('-updatedAt', '-__v');
+        }
+        catch(err){
+            return next(CustomErrorHandler.serverError());
+        }
+        return res.json(document);
     }
 }
 

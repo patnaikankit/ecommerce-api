@@ -36,5 +36,8 @@ router.delete("/products/:id", [auth, admin], productController.destroy);
 // to get all the products
 router.get("/products/:id", productController.index);
 
+// to get a single product
+router.get("/products/:id", productController.show);
+
 
 export default router;
