@@ -13,7 +13,7 @@ const errorHandler = (err, req, res, next) => {
         ...(DEBUG_MODE == 'true' && {originalError: err.message})
     }
     // if the error is of the class error received from above middleware
-    if(err instanceof pkg){
+    if(err instanceof ValidationError){
         statusCode = 422,
         data = {
             message: err.message

@@ -6,8 +6,8 @@ import bcrypt from "bcrypt";
 import JwtService from "../../services/Jwtservice.js";
 import { REFRESH_SECRET } from "../../config/index.js";
 
-// using joi library for all the validation involved in the system
-const joi = require("joi");
+// using Joi library for all the validation involved in the system
+import Joi from 'joi';
 
 
 const registerController = {
@@ -15,11 +15,11 @@ const registerController = {
         // Validation
         // user credentials will be checked
         // creating a register schema
-        const registrationSchema = joi.object({
-            name: joi.string().min(5).max(30).required(),
-            email: joi.string().email().required(),
-            password: joi.string().pattern(new RegExp('^[a-zA-Z0-9]{5,30}$')).required(),
-            confirm_password: joi.ref('password')
+        const registrationSchema = Joi.object({
+            name: Joi.string().min(5).max(30).required(),
+            email: Joi.string().email().required(),
+            password: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{5,30}$')).required(),
+            confirm_password: Joi.ref('password')
         });
 
         const { error } = registrationSchema.validate(req.body);
@@ -31,7 +31,7 @@ const registerController = {
 
         // if email already exists
         try{
-            const exist = await User.exist({email: req.body.email});
+            const exist = await User.exists({ email: req.body.email });
             if(exist){
                 return next(CustomErrorHandler.alreadyExist("This email is already taken!"));
             }
@@ -49,8 +49,7 @@ const registerController = {
             password: hashedPassword
         });
 
-        let access_token;
-        let refresh_token;
+        let access_token,refresh_token;
 
         // saving data of new users in the database 
         try{

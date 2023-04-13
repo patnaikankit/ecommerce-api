@@ -3,7 +3,7 @@ import express from 'express';
 const router = express.Router();
 
 // importing the logic from the desired route
-import { registerController, loginController, userController, refreshController } from '../controllers/index.js';
+import { registerController, loginController, userController, refreshController, productController } from '../controllers/index.js';
 import auth from "../middleware/auth.js"
 import admin from "../middleware/admin.js"
 
@@ -25,7 +25,7 @@ router.post("/refresh", refreshController.refresh);
 router.post("/logout", auth, loginController.logout);
 
 // Adding a new product
-router.post("/products", auth, productController.store);
+router.post('/products', [auth, admin], productController.store);
 
 // Updating a product
 router.put("/products/:id", [auth, admin], productController.update);
