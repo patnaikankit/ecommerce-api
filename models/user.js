@@ -1,4 +1,5 @@
-import { string } from "joi";
+import pkg from 'joi';
+const { string } = pkg;
 import mongoose from "mongoose";
 
 

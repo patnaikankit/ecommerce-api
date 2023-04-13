@@ -12,8 +12,6 @@ const joi = require("joi");
 
 const registerController = {
     async register(req, res, next){
-
-
         // Validation
         // user credentials will be checked
         // creating a register schema

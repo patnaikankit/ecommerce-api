@@ -1,9 +1,9 @@
 // the logic to allow a user to log in
 
 import Joi from "joi";
-import CustomErrorHandler from "../../services/CustomErrorHandler";
+import CustomErrorHandler from "../../services/CustomErrorHandler.js";
 import bcrypt from "bcrypt";
-import JwtService from "../../services/Jwtservice";
+import JwtService from "../../services/Jwtservice.js";
 import { REFRESH_SECRET } from "../../config/index.js";
 import { User, RefreshToken } from "../../models/index.js";
 

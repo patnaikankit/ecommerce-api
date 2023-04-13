@@ -1,4 +1,4 @@
-import CustomErrorHandler from "../../services/CustomErrorHandler.js";
+import CustomErrorHandler from "../services/CustomErrorHandler.js";
 import JwtService from "../services/Jwtservice.js";
 
 // middleware to make sure that the data is provided only after the login credentials are validated

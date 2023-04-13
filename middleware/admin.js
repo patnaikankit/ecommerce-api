@@ -1,4 +1,4 @@
-import { User } from "../models"
+import { User } from "../models/index.js"
 import CustomErrorHandler from "../services/CustomErrorHandler.js";
 
 // to make sure that admin can only make changes in product
@@ -16,3 +16,5 @@ const admin = async (req, res, next) => {
         return next(CustomErrorHandler.serverError());
     }
 }
+
+export default admin;

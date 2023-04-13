@@ -1,5 +1,5 @@
 // the logic to add, update and delete a product to from cart
-import { product } from "../models/product.js";
+// import { Product } from "../models/product.js";
 
 // to add an image of the product to the database
 import multer from "multer";

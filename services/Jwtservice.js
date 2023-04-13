@@ -1,5 +1,6 @@
-import { JWT_SECRET } from "../config";
-import { Jwt } from "jsonwebtoken";
+import { JWT_SECRET } from "../config/index.js";
+import pkg from 'jsonwebtoken';
+const { Jwt } = pkg;
 
 // Creating a jwt token which will to be sent to the client
 class JwtService{
