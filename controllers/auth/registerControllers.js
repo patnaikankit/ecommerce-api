@@ -40,8 +40,10 @@ const registerController = {
             return next(err);
         }
 
-        // Securing the password with brypt
+        // Securing the password with bcrypt
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+        const { name, email } = req.body; // Extract name and email from req.body
 
         const user = new User({
             name,
@@ -49,15 +51,15 @@ const registerController = {
             password: hashedPassword
         });
 
-        let access_token,refresh_token;
+        let access_token, refresh_token;
 
         // saving data of new users in the database 
         try{
-            const result = await User.save();
+            const result = await user.save(); // Save the user object instead of User.save()
 
-            // Token geneartion
+            // Token generation
 
-            // at the the time of login - access_token has short expiry time
+            // at the time of login - access_token has a short expiry time
             access_token = JwtService.sign({_id: result._id, role: result.role});
             // generated at the time of login but will come in effect after access_token expires 
             refresh_token = JwtService.sign({_id: result._id, role: result.role}, '1y', REFRESH_SECRET);
@@ -74,5 +76,3 @@ const registerController = {
 }
 
 export default registerController;
-
-
